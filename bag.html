@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BagMech Bengaluru — Doorstep Luggage Repair & Replacement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F2027;
+    --surface:#16323D;
+    --surface-2:#1D3D48;
+    --amber:#E8A33D;
+    --teal:#6FBEA3;
+    --paper:#F4EFE4;
+    --paper-dim:#CFC9BB;
+    --danger:#D9724A;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 .4em 0;
+    letter-spacing:.2px;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    color:var(--amber);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--amber);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(15,32,39,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(244,239,228,.1);
+  }
+  nav.wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;}
+  .brand-tag{
+    width:30px;height:30px;border:1.5px solid var(--amber);border-radius:3px;
+    display:flex;align-items:center;justify-content:center;color:var(--amber);
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;position:relative;
+  }
+  .brand-tag::before{content:"";position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:2px;height:6px;background:var(--amber);}
+  .navlinks{display:flex;gap:26px;font-size:.88rem;list-style:none;margin:0;padding:0;}
+  .navlinks a{text-decoration:none;opacity:.85;transition:opacity .15s;}
+  .navlinks a:hover{opacity:1;color:var(--amber);}
+  .navlinks{display:none;}
+  @media(min-width:860px){.navlinks{display:flex;}}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 20px;border-radius:2px;font-weight:600;font-size:.86rem;
+    text-decoration:none;border:1px solid transparent;cursor:pointer;
+    font-family:'Inter',sans-serif;transition:transform .15s ease, background .15s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-amber{background:var(--amber);color:#141414;}
+  .btn-amber:hover{background:#f0b158;}
+  .btn-outline{border-color:rgba(244,239,228,.4);color:var(--paper);}
+  .btn-outline:hover{border-color:var(--amber);color:var(--amber);}
+  .btn-wa{background:#25D366;color:#08210f;}
+  .btn:disabled{opacity:.6;cursor:not-allowed;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:90px 0 70px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 80% -10%, rgba(111,190,163,.18), transparent 60%),
+      linear-gradient(180deg,var(--ink),var(--surface));
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(2.1rem,4.2vw,3.4rem);line-height:1.08;}
+  .hero h1 em{font-style:normal;color:var(--amber);}
+  .hero p.lede{font-size:1.05rem;color:var(--paper-dim);max-width:46ch;margin-bottom:28px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px;}
+  .hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+  .hero-stats div{border-left:2px solid var(--amber);padding-left:12px;}
+  .hero-stats .num{font-family:'IBM Plex Mono',monospace;font-size:1.3rem;color:var(--amber);}
+  .hero-stats .lbl{font-size:.76rem;color:var(--paper-dim);}
+
+  /* the hanging luggage tag — signature element */
+  .tag-wrap{display:flex;justify-content:center;position:relative;}
+  .tag-string{width:1px;height:46px;background:linear-gradient(var(--paper-dim),transparent);margin:0 auto;}
+  .luggage-tag{
+    width:100%;max-width:320px;
+    background:var(--paper);color:var(--ink);
+    border-radius:8px;
+    padding:26px 24px 22px;
+    position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.55);
+    transform:rotate(3deg);
+    animation:swing 6.5s ease-in-out infinite;
+    transform-origin:top center;
+  }
+  @media (prefers-reduced-motion: reduce){.luggage-tag{animation:none;}}
+  @keyframes swing{
+    0%,100%{transform:rotate(3deg);}
+    50%{transform:rotate(-3deg);}
+  }
+  .luggage-tag .hole{
+    position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:14px;height:14px;border-radius:50%;background:var(--ink);
+    box-shadow:inset 0 2px 3px rgba(0,0,0,.5);
+  }
+  .luggage-tag .tt{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.08em;color:#7a7266;text-transform:uppercase;margin-top:14px;}
+  .luggage-tag .rt{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;margin:2px 0 10px;}
+  .luggage-tag hr{border:none;border-top:1px dashed #b9b2a2;margin:12px 0;}
+  .luggage-tag .row{display:flex;justify-content:space-between;font-size:.82rem;margin:6px 0;}
+  .luggage-tag .row b{font-family:'IBM Plex Mono',monospace;}
+  .luggage-tag .barcode{height:30px;margin-top:14px;background:repeating-linear-gradient(90deg,#1c1c1c 0 2px,transparent 2px 5px);opacity:.85;}
+
+  section{padding:78px 0;}
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head p{color:var(--paper-dim);}
+
+  /* ---------- SERVICES ---------- */
+  .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:rgba(244,239,228,.12);border:1px solid rgba(244,239,228,.12);}
+  .svc-card{background:var(--surface);padding:28px 24px;transition:background .2s;}
+  .svc-card:hover{background:var(--surface-2);}
+  .svc-icon{width:42px;height:42px;margin-bottom:18px;color:var(--amber);}
+  .svc-card h3{font-size:1.05rem;margin-bottom:8px;}
+  .svc-card p{font-size:.86rem;color:var(--paper-dim);margin:0;}
+
+  /* ---------- PROCESS ---------- */
+  .process{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:step;position:relative;}
+  @media(max-width:760px){.process{grid-template-columns:1fr 1fr;}}
+  .process::before{content:"";position:absolute;top:20px;left:0;right:0;height:1px;background:rgba(244,239,228,.15);}
+  @media(max-width:760px){.process::before{display:none;}}
+  .step{position:relative;padding:0 20px 0 0;}
+  .step .n{
+    font-family:'IBM Plex Mono',monospace;color:var(--ink);background:var(--amber);
+    width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:600;margin-bottom:18px;position:relative;z-index:2;
+  }
+  .step h3{font-size:.98rem;}
+  .step p{font-size:.84rem;color:var(--paper-dim);}
+
+  /* ---------- SERVICE AREAS as tags ---------- */
+  .zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;}
+  .zone-tag{
+    background:var(--surface);border:1px solid rgba(244,239,228,.14);border-radius:4px;
+    padding:16px 16px 14px;position:relative;overflow:hidden;
+  }
+  .zone-tag::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal);}
+  .zone-tag.far::before{background:var(--danger);}
+  .zone-tag .zname{font-weight:600;font-size:.95rem;margin-bottom:10px;}
+  .zone-tag .eta{
+    font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--paper-dim);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .zone-tag .eta b{color:var(--amber);font-size:.95rem;}
+  .zone-note{margin-top:20px;font-size:.78rem;color:var(--paper-dim);}
+  .zone-note span{color:var(--danger);font-weight:600;}
+
+  /* ---------- BOOKING ---------- */
+  .book-shell{
+    background:var(--surface);border:1px solid rgba(244,239,228,.12);border-radius:6px;
+    padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  }
+  @media(max-width:820px){.book-shell{grid-template-columns:1fr;padding:26px;}}
+  label{display:block;font-size:.78rem;font-family:'IBM Plex Mono',monospace;color:var(--paper-dim);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+  .field{margin-bottom:18px;}
+  input,select,textarea{
+    width:100%;background:var(--ink);border:1px solid rgba(244,239,228,.2);color:var(--paper);
+    padding:11px 12px;border-radius:3px;font-family:'Inter',sans-serif;font-size:.92rem;
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--amber);outline-offset:1px;border-color:var(--amber);}
+  textarea{min-height:70px;resize:vertical;}
+  .loc-box{
+    border:1px dashed rgba(244,239,228,.3);border-radius:4px;padding:16px;margin-bottom:20px;
+    background:rgba(111,190,163,.05);
+  }
+  .loc-box.granted{border-color:var(--teal);background:rgba(111,190,163,.12);}
+  .loc-status{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--teal);margin-top:10px;display:none;}
+  .loc-status.show{display:block;}
+  .loc-status.err{color:var(--danger);}
+  .eta-preview{
+    margin-top:8px;font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--amber);min-height:1.2em;
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:480px){.row2{grid-template-columns:1fr;}}
+  fieldset{border:none;padding:0;margin:0 0 18px;}
+  .why-list{list-style:none;margin:0;padding:0;}
+  .why-list li{display:flex;gap:12px;margin-bottom:16px;font-size:.9rem;color:var(--paper-dim);}
+  .why-list li::before{content:"✓";color:var(--teal);font-weight:700;}
+
+  /* checkbox / radio grid — used for repair types AND zone picker */
+  .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:480px){.check-grid{grid-template-columns:1fr;}}
+  .check-item{
+    display:flex;align-items:center;gap:9px;background:var(--ink);
+    border:1px solid rgba(244,239,228,.2);border-radius:3px;padding:10px 12px;
+    font-size:.86rem;cursor:pointer;transition:border-color .15s;
+  }
+  .check-item:hover{border-color:rgba(244,239,228,.4);}
+  .check-item input[type="checkbox"],
+  .check-item input[type="radio"]{width:auto;accent-color:var(--amber);cursor:pointer;flex-shrink:0;}
+  .check-item.checked{border-color:var(--amber);background:rgba(232,163,61,.08);}
+  .check-item .far-tag{color:var(--danger);font-size:.72rem;margin-left:auto;font-family:'IBM Plex Mono',monospace;}
+  .check-item .eta-tag{color:var(--paper-dim);font-size:.72rem;margin-left:auto;font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- ACCORDION SELECTORS (zone + issues) ---------- */
+  .accordion{
+    border:1px solid rgba(244,239,228,.18);border-radius:6px;overflow:hidden;
+    background:var(--ink);transition:border-color .2s ease;
+  }
+  .accordion.open{border-color:var(--amber);}
+  .accordion + .accordion{margin-top:14px;}
+  .accordion-trigger{
+    width:100%;display:flex;align-items:center;gap:12px;
+    background:transparent;border:none;color:var(--paper);
+    padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;
+    font-size:.92rem;text-align:left;
+  }
+  .accordion-trigger:hover{background:rgba(244,239,228,.04);}
+  .accordion-icon{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    background:rgba(232,163,61,.12);color:var(--amber);
+    display:flex;align-items:center;justify-content:center;font-size:1rem;
+  }
+  .accordion-label-wrap{flex:1;min-width:0;}
+  .accordion-label{
+    display:block;font-size:.7rem;font-family:'IBM Plex Mono',monospace;
+    text-transform:uppercase;letter-spacing:.06em;color:var(--paper-dim);margin-bottom:3px;
+  }
+  .accordion-value{
+    display:block;font-size:.95rem;font-weight:600;color:var(--paper);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .accordion-value.placeholder{color:var(--paper-dim);font-weight:400;}
+  .accordion-chevron{
+    color:var(--paper-dim);font-size:.9rem;flex-shrink:0;
+    transition:transform .25s ease;
+  }
+  .accordion.open .accordion-chevron{transform:rotate(180deg);color:var(--amber);}
+  .accordion-panel{
+    max-height:0;overflow:hidden;
+    transition:max-height .28s ease;
+  }
+  .accordion.open .accordion-panel{max-height:600px;}
+  .accordion-panel-inner{
+    padding:4px 16px 16px;border-top:1px solid rgba(244,239,228,.1);
+  }
+  .accordion-panel .check-grid{padding-top:14px;}
+  .accordion-done{
+    width:100%;margin-top:12px;padding:10px;
+    background:transparent;border:1px solid rgba(244,239,228,.25);color:var(--paper-dim);
+    border-radius:3px;font-size:.82rem;cursor:pointer;font-family:'Inter',sans-serif;
+    transition:border-color .15s,color .15s;
+  }
+  .accordion-done:hover{border-color:var(--amber);color:var(--amber);}
+
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(232,163,61,.1);border:1px solid rgba(232,163,61,.4);
+    color:var(--amber);padding:6px 8px 6px 12px;border-radius:20px;
+    font-size:.78rem;font-weight:500;
+    animation:chipIn .18s ease;
+  }
+  @keyframes chipIn{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+  .chip button{
+    background:rgba(232,163,61,.25);border:none;color:var(--amber);
+    width:16px;height:16px;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:.7rem;line-height:1;
+    padding:0;transition:background .15s;
+  }
+  .chip button:hover{background:var(--amber);color:#141414;}
+
+  .form-msg{font-size:.84rem;margin-top:10px;display:none;}
+  .form-msg.show{display:block;}
+  .form-msg.err{color:var(--danger);}
+  .form-msg.ok{color:var(--teal);}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .testi{background:var(--surface);border:1px solid rgba(244,239,228,.12);border-radius:6px;padding:24px;}
+  .testi p{font-size:.92rem;color:var(--paper-dim);margin-bottom:14px;}
+  .testi .who{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--amber);}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid rgba(244,239,228,.14);padding:18px 0;}
+  .faq-item summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"+";color:var(--amber);font-size:1.2rem;}
+  .faq-item[open] summary::after{content:"–";}
+  .faq-item p{color:var(--paper-dim);margin:12px 0 0;font-size:.9rem;}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact-band{background:var(--surface-2);}
+  .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;}
+  .contact-item .k{font-family:'IBM Plex Mono',monospace;font-size:.7rem;text-transform:uppercase;color:var(--amber);letter-spacing:.08em;margin-bottom:6px;}
+  footer{background:var(--ink);border-top:1px solid rgba(244,239,228,.1);padding:56px 0 26px;font-size:.85rem;}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:34px;margin-bottom:40px;}
+  @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+  .foot-grid h4{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;color:var(--amber);letter-spacing:.08em;margin-bottom:14px;}
+  .foot-grid ul{list-style:none;margin:0;padding:0;}
+  .foot-grid li{margin-bottom:9px;}
+  .foot-grid a{text-decoration:none;color:var(--paper-dim);}
+  .foot-grid a:hover{color:var(--amber);}
+  .foot-bottom{border-top:1px solid rgba(244,239,228,.1);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--paper-dim);font-size:.8rem;}
+
+  .wa-float{
+    position:fixed;bottom:22px;right:22px;z-index:60;
+    background:#25D366;color:#08210f;width:56px;height:56px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.4);
+    text-decoration:none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand"><span class="brand-tag">BM</span> BagMech Bengaluru</div>
+    <ul class="navlinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#areas">Service Areas</a></li>
+      <li><a href="#process">How it works</a></li>
+      <li><a href="#faq">FAQs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#book" class="btn btn-amber">Book a Repair</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Doorstep Luggage Repair · Bengaluru</div>
+      <h1>Your suitcase broke.<br><em>We'll come fix it</em> — not the other way round.</h1>
+      <p class="lede">Wheels, handles, zips, locks and straps — replaced at your doorstep with genuine spare parts, by technicians who show up when they say they will.</p>
+      <div class="hero-ctas">
+        <a href="#book" class="btn btn-amber">Book Doorstep Visit</a>
+        <a href="#" id="waHeroBtn" class="btn btn-wa" target="_blank" rel="noopener">WhatsApp Us</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="num">25 min</div><div class="lbl">avg. ETA, most zones</div></div>
+        <div><div class="num">15+</div><div class="lbl">Bengaluru zones covered</div></div>
+        <div><div class="num">100%</div><div class="lbl">genuine spare parts</div></div>
+      </div>
+    </div>
+    <div class="tag-wrap">
+      <div>
+        <div class="tag-string"></div>
+        <div class="luggage-tag">
+          <div class="hole"></div>
+          <div class="tt">Service Ticket</div>
+          <div class="rt">Wheel Replacement</div>
+          <hr>
+          <div class="row"><span>Zone</span><b>HSR Layout</b></div>
+          <div class="row"><span>ETA</span><b>25 min</b></div>
+          <div class="row"><span>Parts</span><b>Genuine · Warranty</b></div>
+          <div class="row"><span>Status</span><b style="color:#3f8f6b;">Confirmed</b></div>
+          <div class="barcode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What we repair</div>
+      <h2>Every part that fails on a well-travelled bag</h2>
+      <p>If it rolls, zips, locks or carries — we stock the part and the tool for it.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+        <h3>Wheel Replacement</h3>
+        <p>Single, double or full 360° spinner wheel sets — matched to your bag's original mount.</p>
+      </div>
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 21V9a2 2 0 012-2h8a2 2 0 012 2v12"/><path d="M9 7V5a3 3 0 016 0v2"/></svg>
+        <h3>Trolley Handle Replacement</h3>
+        <p>Telescopic handle assemblies, push-button mechanisms and grip replacements.</p>
+      </div>
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <h3>Shoulder Strap Replacement</h3>
+        <p>Padded and webbing straps re-fitted with reinforced stitching at stress points.</p>
+      </div>
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v18M16 3v18M4 7h16M4 17h16"/></svg>
+        <h3>Zip Replacement</h3>
+        <p>Full zip-tape swaps for torn or misaligned tracks — colour-matched where possible.</p>
+      </div>
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="2"/><path d="M6 12a6 6 0 1112 0"/></svg>
+        <h3>Zip Runner Replacement</h3>
+        <p>Just the puller gone? We swap runners without touching the rest of the zip line.</p>
+      </div>
+      <div class="svc-card">
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="10" width="14" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <h3>TSA & Standard Locks</h3>
+        <p>Combination resets, TSA-approved lock swaps, and standard key-lock replacement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The visit, start to finish</div>
+      <h2>Four steps, one doorstep</h2>
+    </div>
+    <div class="process">
+      <div class="step"><div class="n">1</div><h3>Send photos</h3><p>Share your luggage photos on WhatsApp or the booking form below.</p></div>
+      <div class="step"><div class="n">2</div><h3>Get a quote</h3><p>We confirm the part needed and quote it before you commit to anything.</p></div>
+      <div class="step"><div class="n">3</div><h3>Technician arrives</h3><p>At your address, within the ETA for your zone, with the part in hand.</p></div>
+      <div class="step"><div class="n">4</div><h3>Pay & get warranty</h3><p>Repair completed on the spot, invoice and part warranty shared instantly.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="areas">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Coverage</div>
+      <h2>Bengaluru zones we operate in</h2>
+      <p>Average technician ETA by zone, measured from our operating base near Bommanahalli / Silk Board.</p>
+    </div>
+    <div class="zone-grid" id="zoneGrid">
+      <!-- populated by JS from zoneData -->
+    </div>
+    <p class="zone-note"><span>●</span> Zones marked in orange are further from our base — ETA is 45 min there instead of the usual 25 min. We'd still rather tell you upfront than keep you guessing at the door.</p>
+  </div>
+</section>
+
+<section id="book" style="background:var(--surface);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Book a doorstep visit</div>
+      <h2>Share your location, tell us what's broken — we'll take it from there</h2>
+    </div>
+    <div class="book-shell">
+      <div>
+        <h3 style="font-size:1.1rem;">Why book directly</h3>
+        <ul class="why-list">
+          <li>Live location shared straight to our technician — no zone guessing</li>
+          <li>One technician assigned, no call-centre relay</li>
+          <li>Genuine parts held in stock, not ordered after visit</li>
+          <li>Warranty card issued digitally the same day</li>
+        </ul>
+        <div class="loc-box" id="locBox">
+          <label style="margin-bottom:2px;">Step 1 — Share your live location (required)</label>
+          <p style="font-size:.85rem;color:var(--paper-dim);margin:0 0 12px;">Location sharing is required before you can submit a booking — it's how we find you and confirm your real ETA.</p>
+          <button type="button" class="btn btn-outline" id="locBtn">📍 Share My Location</button>
+          <div class="loc-status" id="locStatus"></div>
+        </div>
+      </div>
+      <form id="bookForm" onsubmit="event.preventDefault(); handleBooking();">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" required placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" required placeholder="9XXXXXXXXX">
+        </div>
+        <div class="field">
+          <label for="address">Doorstep address</label>
+          <textarea id="address" required placeholder="Flat / house no., building, street, landmark"></textarea>
+        </div>
+        <div class="field">
+          <div class="accordion" id="zoneAccordion">
+            <button type="button" class="accordion-trigger" id="zoneTrigger" aria-expanded="false">
+              <span class="accordion-icon">📍</span>
+              <span class="accordion-label-wrap">
+                <span class="accordion-label">Zone</span>
+                <span class="accordion-value placeholder" id="zoneTriggerValue">Select your zone</span>
+              </span>
+              <span class="accordion-chevron">▾</span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <div class="check-grid" id="zonePicker"><!-- populated by JS --></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="accordion" id="issueAccordion">
+            <button type="button" class="accordion-trigger" id="issueTrigger" aria-expanded="false">
+              <span class="accordion-icon">🧰</span>
+              <span class="accordion-label-wrap">
+                <span class="accordion-label">Repair type</span>
+                <span class="accordion-value placeholder" id="issueTriggerValue">What needs repair?</span>
+              </span>
+              <span class="accordion-chevron">▾</span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <div class="check-grid" id="issueGrid">
+                  <label class="check-item"><input type="checkbox" value="Wheel Replacement"> Wheel Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="Trolley Handle Replacement"> Trolley Handle Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="Shoulder Strap Replacement"> Shoulder Strap Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="Zip Replacement"> Zip Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="Zip Runner Replacement"> Zip Runner Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="TSA / Standard Lock Replacement"> TSA / Standard Lock Replacement</label>
+                  <label class="check-item"><input type="checkbox" value="Not sure — need inspection"> Not sure — need inspection</label>
+                </div>
+                <button type="button" class="accordion-done" id="issueDoneBtn">Done selecting</button>
+              </div>
+            </div>
+          </div>
+          <div class="chip-row" id="issueChips"></div>
+        </div>
+        <div class="form-msg" id="formMsg"></div>
+        <button type="submit" class="btn btn-amber" style="width:100%;justify-content:center;margin-top:10px;" id="submitBtn">Confirm Booking Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Customer stories</div>
+      <h2>What Bengaluru travellers say</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi"><p>"Wheel snapped off the night before a flight. Technician came to HSR Layout in about 20 minutes and had it rolling again."</p><div class="who">— Ananya R., HSR Layout</div></div>
+      <div class="testi"><p>"Was ready for a 45-minute wait since I'm in JP Nagar, and that's exactly how long it took. No surprises."</p><div class="who">— Rohit K., JP Nagar</div></div>
+      <div class="testi"><p>"TSA lock was jammed shut with my documents inside. Sorted at my doorstep in Electronic City same day."</p><div class="who">— Farah S., Electronic City</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--surface);">
+  <div class="wrap" style="max-width:820px;">
+    <div class="section-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Frequently asked</h2>
+    </div>
+    <details class="faq-item" open>
+      <summary>Why do you ask for my location before booking?</summary>
+      <p>Sharing your live location gives the technician precise directions and lets us confirm the real ETA to your doorstep, instead of relying on a general area guess.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What is the average technician ETA?</summary>
+      <p>25 minutes for most of our coverage zones. JP Nagar, Kasavanahalli, Bellandur and MG Road are further from our operating base, so ETA there is closer to 45 minutes.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do you use genuine spare parts?</summary>
+      <p>Yes — every wheel, handle, zip, runner and lock we fit is a genuine or manufacturer-grade part, backed with a warranty card issued on the day of repair.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Can I book same-day?</summary>
+      <p>Same-day service is available subject to technician availability in your zone — WhatsApp us for the fastest confirmation.</p>
+    </details>
+  </div>
+</section>
+
+<section class="contact-band" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Reach us</div>
+      <h2>Talk to us before you book, if you'd like</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-item"><div class="k">Location</div>Bengaluru, Karnataka</div>
+      <div class="contact-item"><div class="k">Phone</div>+91 XXXXXXXXXX</div>
+      <div class="contact-item"><div class="k">Email</div>info@yourcompany.com</div>
+      <div class="contact-item"><div class="k">Hours</div>Mon – Sun, 8 AM – 8 PM</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px;"><span class="brand-tag">BM</span> BagMech Bengaluru</div>
+        <p style="color:var(--paper-dim);max-width:36ch;">Doorstep luggage and travel bag repair across Bengaluru — genuine parts, upfront ETAs, warranty on every job.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul><li><a href="#services">Services</a></li><li><a href="#areas">Service Areas</a></li><li><a href="#book">Book Now</a></li><li><a href="#contact">Contact</a></li></ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul><li><a href="#services">Wheel Replacement</a></li><li><a href="#services">Trolley Handle</a></li><li><a href="#services">Zip Replacement</a></li><li><a href="#services">Lock Replacement</a></li></ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul><li><a href="#" target="_blank" rel="noopener">Instagram</a></li><li><a href="#" target="_blank" rel="noopener">Facebook</a></li><li><a href="#" target="_blank" rel="noopener">YouTube</a></li><li><a href="#" target="_blank" rel="noopener">LinkedIn</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 BagMech Bengaluru. All rights reserved.</span>
+      <span>Privacy Policy · Terms & Conditions</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" id="waFloatBtn" href="#" target="_blank" rel="noopener" aria-label="WhatsApp us">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#08210f"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1112 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.3-.5-.5-1-1.1-1.4-1.8-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3.2-.5.1-.2 0-.4 0-.5-.1-.1-.5-1.3-.7-1.8-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.7.7-1 1.5-1 2.5.1 1.2.6 2.4 1.4 3.4 1.5 2 3.4 3.5 5.7 4.2.6.2 1.1.3 1.6.2.6-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.2-.2-.2-.4-.3z"/></svg>
+</a>
+
+<script>
+  // ============================================================
+  // Point this at your backend. While testing locally it's
+  // localhost:8000 — change this to your real domain once you
+  // deploy the backend somewhere (Railway, Render, etc.)
+  // ============================================================
+  const API_BASE = "http://localhost:8000";
+
+  // Fallback list, only used if the /api/zones fetch below fails (e.g. backend
+  // not running yet). Real bookings should always use IDs from the backend —
+  // this fallback has no valid ids and the zone picker will show a warning
+  // instead of using it for the actual form.
+  const fallbackZoneData = [
+    {name:"Singasandra", eta:25},
+    {name:"Begur", eta:25},
+    {name:"Hosa Road", eta:25},
+    {name:"Electronic City", eta:25},
+    {name:"Kudlu Gate", eta:25},
+    {name:"Somasandra Palya", eta:25},
+    {name:"Choodasandra", eta:25},
+    {name:"Kasavanahalli", eta:45},
+    {name:"Bommanahalli", eta:25},
+    {name:"HSR Layout", eta:25},
+    {name:"Bellandur", eta:45},
+    {name:"Silk Board", eta:25},
+    {name:"BTM Layout", eta:25},
+    {name:"JP Nagar", eta:45},
+    {name:"Jayanagar", eta:25},
+    {name:"MG Road", eta:45},
+  ];
+
+  const zoneGrid = document.getElementById('zoneGrid');
+  const zonePicker = document.getElementById('zonePicker');
+  let selectedZoneId = null;
+
+  function renderCoverageGrid(zones){
+    zoneGrid.innerHTML = '';
+    zones.forEach(z => {
+      const card = document.createElement('div');
+      card.className = 'zone-tag' + (z.is_far ? ' far' : '');
+      card.innerHTML = `<div class="zname">${z.name}</div><div class="eta"><span>Avg. ETA</span><b>${z.eta_minutes} min</b></div>`;
+      zoneGrid.appendChild(card);
+    });
+  }
+
+  const zoneAccordion = document.getElementById('zoneAccordion');
+  const zoneTrigger = document.getElementById('zoneTrigger');
+  const zoneTriggerValue = document.getElementById('zoneTriggerValue');
+  let selectedZoneName = null;
+
+  function renderZonePicker(zones, isLive){
+    zonePicker.innerHTML = '';
+    if(!isLive){
+      const warn = document.createElement('p');
+      warn.style.cssText = 'grid-column:1/-1;color:var(--danger);font-size:.8rem;margin:0 0 8px;';
+      warn.textContent = "Couldn't load live zones from the server — please refresh the page before booking.";
+      zonePicker.appendChild(warn);
+      return;
+    }
+    zones.forEach(z => {
+      const item = document.createElement('label');
+      item.className = 'check-item';
+      item.innerHTML = `
+        <input type="radio" name="zoneRadio" value="${z.id}">
+        <span>${z.name}</span>
+      `;
+      const radio = item.querySelector('input');
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('#zonePicker .check-item').forEach(i => i.classList.remove('checked'));
+        item.classList.add('checked');
+        selectedZoneId = z.id;
+        selectedZoneName = z.name;
+        zoneTriggerValue.textContent = z.name;
+        zoneTriggerValue.classList.remove('placeholder');
+        closeAccordion(zoneAccordion);
+        updateWhatsAppLinks();
+      });
+      zonePicker.appendChild(item);
+    });
+  }
+
+  // ---------- Load real zones (with real ids) from the backend ----------
+  (async function loadZones(){
+    try {
+      const res = await fetch(`${API_BASE}/api/zones`);
+      if(!res.ok) throw new Error('zones fetch failed');
+      const zones = await res.json(); // [{id, name, eta_minutes, is_far}, ...]
+      renderCoverageGrid(zones);
+      renderZonePicker(zones, true);
+    } catch (e) {
+      // Show the static ETA info so the coverage section still looks right,
+      // but flag the booking form since we don't have real zone ids to book with.
+      renderCoverageGrid(fallbackZoneData.map(z => ({name: z.name, eta_minutes: z.eta, is_far: z.eta >= 45})));
+      renderZonePicker([], false);
+    }
+  })();
+
+  // ---------- Generic accordion open/close ----------
+  function openAccordion(el){
+    document.querySelectorAll('.accordion.open').forEach(a => { if(a !== el) closeAccordion(a); });
+    el.classList.add('open');
+    el.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'true');
+  }
+  function closeAccordion(el){
+    el.classList.remove('open');
+    el.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+  }
+  function toggleAccordion(el){
+    el.classList.contains('open') ? closeAccordion(el) : openAccordion(el);
+  }
+
+  zoneTrigger.addEventListener('click', () => toggleAccordion(zoneAccordion));
+
+  const issueAccordion = document.getElementById('issueAccordion');
+  const issueTrigger = document.getElementById('issueTrigger');
+  const issueTriggerValue = document.getElementById('issueTriggerValue');
+  const issueChips = document.getElementById('issueChips');
+  const issueDoneBtn = document.getElementById('issueDoneBtn');
+
+  issueTrigger.addEventListener('click', () => toggleAccordion(issueAccordion));
+  issueDoneBtn.addEventListener('click', () => closeAccordion(issueAccordion));
+
+  function renderIssueChips(){
+    const checked = Array.from(document.querySelectorAll('#issueGrid input[type="checkbox"]:checked'));
+    issueChips.innerHTML = '';
+    checked.forEach(cb => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.innerHTML = `${cb.value}<button type="button" aria-label="Remove">×</button>`;
+      chip.querySelector('button').addEventListener('click', () => {
+        cb.checked = false;
+        cb.closest('.check-item').classList.remove('checked');
+        renderIssueChips();
+        updateWhatsAppLinks();
+      });
+      issueChips.appendChild(chip);
+    });
+    if(checked.length === 0){
+      issueTriggerValue.textContent = 'What needs repair?';
+      issueTriggerValue.classList.add('placeholder');
+    } else {
+      issueTriggerValue.textContent = `${checked.length} selected`;
+      issueTriggerValue.classList.remove('placeholder');
+    }
+  }
+
+  // ---------- Close any open accordion on outside click ----------
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.accordion.open').forEach(a => {
+      if(!a.contains(e.target)) closeAccordion(a);
+    });
+  });
+
+  document.querySelectorAll('#issueGrid .check-item').forEach(item => {
+    const cb = item.querySelector('input[type="checkbox"]');
+    cb.addEventListener('change', () => {
+      item.classList.toggle('checked', cb.checked);
+      renderIssueChips();
+      updateWhatsAppLinks();
+    });
+  });
+
+  // ---------- Phone: digits only, capped at 10 ----------
+  const phoneInput = document.getElementById('phone');
+  phoneInput.addEventListener('input', () => {
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+    updateWhatsAppLinks();
+  });
+
+  // ---------- WhatsApp: fetch the real business number, build a live message ----------
+  let businessWhatsAppNumber = null; // e.g. "919876543210" — no '+', no spaces
+
+  async function loadWhatsAppNumber(){
+    try {
+      const res = await fetch(`${API_BASE}/api/config`);
+      if(!res.ok) throw new Error('config fetch failed');
+      const cfg = await res.json(); // expects { whatsapp_number: "919876543210" }
+      businessWhatsAppNumber = (cfg.whatsapp_number || '').replace(/\D/g, '');
+    } catch (e) {
+      businessWhatsAppNumber = null; // buttons will show a friendly fallback message
+    }
+    updateWhatsAppLinks();
+  }
+
+  function buildWhatsAppMessage(){
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const issues = Array.from(document.querySelectorAll('#issueGrid input[type="checkbox"]:checked')).map(cb => cb.value);
+
+    const lines = ["Hi, I'd like to book a luggage repair."];
+    if(name) lines.push(`Name: ${name}`);
+    if(phone) lines.push(`Phone: ${phone}`);
+    if(selectedZoneName) lines.push(`Zone: ${selectedZoneName}`);
+    if(address) lines.push(`Address: ${address}`);
+    if(issues.length) lines.push(`Repair needed: ${issues.join(', ')}`);
+    return lines.join('\n');
+  }
+
+  function updateWhatsAppLinks(){
+    const text = encodeURIComponent(buildWhatsAppMessage());
+    const number = businessWhatsAppNumber; // null until loaded
+    const url = number ? `https://wa.me/${number}?text=${text}` : '#';
+    [document.getElementById('waFloatBtn'), document.getElementById('waHeroBtn')].forEach(btn => {
+      if(!btn) return;
+      btn.href = url;
+      btn.title = number ? '' : 'WhatsApp number not configured yet';
+    });
+  }
+
+  loadWhatsAppNumber();
+  ['name','phone','address'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateWhatsAppLinks);
+  });
+
+  // ---------- Location (mandatory — gates the submit button) ----------
+  const locBtn = document.getElementById('locBtn');
+  const locBox = document.getElementById('locBox');
+  const locStatus = document.getElementById('locStatus');
+  const submitBtn = document.getElementById('submitBtn');
+  let capturedLocation = null;
+
+  locBtn.addEventListener('click', () => {
+    if(!navigator.geolocation){
+      locStatus.textContent = 'Location is not supported on this device/browser. Location sharing is required to book — please try a different device or browser.';
+      locStatus.classList.add('show', 'err');
+      return;
+    }
+    locBtn.textContent = 'Requesting…';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        capturedLocation = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+        locBox.classList.add('granted');
+        locBox.style.borderColor = '';
+        locBtn.textContent = '📍 Location Captured — Share Again';
+        locStatus.textContent = `Captured: ${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}. This will be sent to your technician.`;
+        locStatus.classList.remove('err');
+        locStatus.classList.add('show');
+      },
+      () => {
+        locBtn.textContent = '📍 Share My Location';
+        locStatus.textContent = 'Location permission denied. Location sharing is required to submit a booking — please allow it and try again.';
+        locStatus.classList.add('show', 'err');
+      }
+    );
+  });
+
+  function showFormMsg(text, isError){
+    const el = document.getElementById('formMsg');
+    el.textContent = text;
+    el.className = 'form-msg show ' + (isError ? 'err' : 'ok');
+  }
+
+  async function handleBooking(){
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const issues = Array.from(document.querySelectorAll('#issueGrid input[type="checkbox"]:checked')).map(cb => cb.value);
+
+    if(!/^[6-9][0-9]{9}$/.test(phone)){
+      showFormMsg('Please enter a valid 10-digit Indian mobile number.', true);
+      return;
+    }
+
+    if(!selectedZoneId){
+      showFormMsg('Please select your zone.', true);
+      zonePicker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if(!capturedLocation){
+      showFormMsg('Please tap "Share My Location" above before submitting — we need it to confirm your ETA.', true);
+      locBox.style.borderColor = 'var(--danger)';
+      locBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if(issues.length === 0){
+      showFormMsg('Please select at least one repair type.', true);
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    const payload = {
+      name,
+      phone,
+      address,
+      zone_id: selectedZoneId,
+      issues,
+      latitude: capturedLocation.lat,
+      longitude: capturedLocation.lng,
+      location_shared: true,
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/api/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if(!res.ok){
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || 'Something went wrong, please try again.');
+      }
+
+      await res.json();
+      showFormMsg("Booking received! We'll confirm your slot on WhatsApp/call shortly.", false);
+      document.getElementById('bookForm').reset();
+      document.querySelectorAll('#issueGrid .check-item, #zonePicker .check-item').forEach(i => i.classList.remove('checked'));
+      selectedZoneId = null;
+      selectedZoneName = null;
+      zoneTriggerValue.textContent = 'Select your zone';
+      zoneTriggerValue.classList.add('placeholder');
+      renderIssueChips();
+      capturedLocation = null;
+      locBox.classList.remove('granted');
+      locBox.style.borderColor = '';
+      locStatus.classList.remove('show');
+      locBtn.textContent = '📍 Share My Location';
+      updateWhatsAppLinks();
+    } catch (e) {
+      showFormMsg(e.message || 'Could not submit booking — please check your connection and try again.', true);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Confirm Booking Request';
+    }
+  }
+</script>
+</body>
+</html>
