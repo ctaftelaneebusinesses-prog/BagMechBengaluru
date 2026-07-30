@@ -632,11 +632,11 @@
 
 <script>
   // ============================================================
-  // Point this at your backend. While testing locally it's
-  // localhost:8000 — change this to your real domain once you
-  // deploy the backend somewhere (Railway, Render, etc.)
+  // This file is now served BY the backend itself (FastAPI serves it as
+  // a static file), so the API is always same-origin — relative paths work
+  // both locally (uvicorn on :8000) and in production (Railway).
   // ============================================================
-  const API_BASE = "http://localhost:8000";
+  const API_BASE = "";
 
   // Fallback list, only used if the /api/zones fetch below fails (e.g. backend
   // not running yet). Real bookings should always use IDs from the backend —

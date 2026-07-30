@@ -2,6 +2,7 @@ import uuid
 
 from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -120,3 +121,8 @@ async def update_booking_status(
         select(Booking).options(selectinload(Booking.zone)).where(Booking.id == booking_id)
     )
     return result.scalar_one()
+
+
+# ---------------------- FRONTEND ----------------------
+# Mounted last so it doesn't shadow the /api and /health routes above.
+app.mount("/", StaticFiles(directory="static", html=True), name="frontend")
