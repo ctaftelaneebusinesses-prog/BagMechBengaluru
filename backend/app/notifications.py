@@ -51,6 +51,9 @@ async def send_email_notification(booking: Booking, zone: Zone | None) -> None:
     msg["Subject"] = f"New booking: {booking.issue} — {zone.name if zone else 'Bengaluru'}"
     msg.set_content(_build_message(booking, zone))
 
+    # Port 465 is implicit TLS from the start; 587 negotiates TLS via STARTTLS.
+    use_implicit_tls = settings.smtp_port == 465
+
     try:
         await aiosmtplib.send(
             msg,
@@ -58,7 +61,8 @@ async def send_email_notification(booking: Booking, zone: Zone | None) -> None:
             port=settings.smtp_port,
             username=settings.smtp_user,
             password=settings.smtp_password,
-            start_tls=True,
+            use_tls=use_implicit_tls,
+            start_tls=not use_implicit_tls,
         )
     except Exception:
         logger.exception("Failed to send booking email notification")
