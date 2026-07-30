@@ -7,11 +7,12 @@ class Settings(BaseSettings):
     db_pool_size: int = 5
     db_max_overflow: int = 5
 
-    # ---- Email notifications (Resend) ----
+    # ---- Email notifications (SendGrid) ----
     # Raw SMTP is blocked outbound on most PaaS hosts (Railway included), so
-    # email goes through Resend's HTTPS API instead of aiosmtplib/Gmail SMTP.
+    # email goes through SendGrid's HTTPS API. notify_email_from must be a
+    # Single Sender verified in the SendGrid account (no domain needed).
     enable_email_notifications: bool = False
-    resend_api_key: str = ""
+    sendgrid_api_key: str = ""
     notify_email_from: str = ""
     notify_email_to: str = ""
 

@@ -38,23 +38,23 @@ def _build_message(booking: Booking, zone: Zone | None) -> str:
 async def send_email_notification(booking: Booking, zone: Zone | None) -> None:
     if not settings.enable_email_notifications:
         return
-    if not (settings.resend_api_key and settings.notify_email_to):
-        logger.warning("Email notifications enabled but Resend settings incomplete — skipping.")
+    if not (settings.sendgrid_api_key and settings.notify_email_to):
+        logger.warning("Email notifications enabled but SendGrid settings incomplete — skipping.")
         return
 
     payload = {
-        "from": settings.notify_email_from,
-        "to": [settings.notify_email_to],
+        "personalizations": [{"to": [{"email": settings.notify_email_to}]}],
+        "from": {"email": settings.notify_email_from, "name": "BagMech Bengaluru"},
         "subject": f"New booking: {booking.issue} — {zone.name if zone else 'Bengaluru'}",
-        "text": _build_message(booking, zone),
+        "content": [{"type": "text/plain", "value": _build_message(booking, zone)}],
     }
 
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.post(
-                "https://api.resend.com/emails",
+                "https://api.sendgrid.com/v3/mail/send",
                 json=payload,
-                headers={"Authorization": f"Bearer {settings.resend_api_key}"},
+                headers={"Authorization": f"Bearer {settings.sendgrid_api_key}"},
             )
             resp.raise_for_status()
     except Exception:
