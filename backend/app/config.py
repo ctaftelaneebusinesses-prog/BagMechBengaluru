@@ -7,12 +7,11 @@ class Settings(BaseSettings):
     db_pool_size: int = 5
     db_max_overflow: int = 5
 
-    # ---- Email notifications (SMTP) ----
+    # ---- Email notifications (Resend) ----
+    # Raw SMTP is blocked outbound on most PaaS hosts (Railway included), so
+    # email goes through Resend's HTTPS API instead of aiosmtplib/Gmail SMTP.
     enable_email_notifications: bool = False
-    smtp_host: str = ""
-    smtp_port: int = 587
-    smtp_user: str = ""
-    smtp_password: str = ""
+    resend_api_key: str = ""
     notify_email_from: str = ""
     notify_email_to: str = ""
 

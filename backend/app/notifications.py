@@ -9,9 +9,6 @@ is already saved in Postgres before these are ever called.
 import logging
 
 import httpx
-from email.message import EmailMessage
-
-import aiosmtplib
 
 from app.config import settings
 from app.models import Booking, Zone
@@ -41,29 +38,25 @@ def _build_message(booking: Booking, zone: Zone | None) -> str:
 async def send_email_notification(booking: Booking, zone: Zone | None) -> None:
     if not settings.enable_email_notifications:
         return
-    if not (settings.smtp_host and settings.notify_email_to):
-        logger.warning("Email notifications enabled but SMTP settings incomplete — skipping.")
+    if not (settings.resend_api_key and settings.notify_email_to):
+        logger.warning("Email notifications enabled but Resend settings incomplete — skipping.")
         return
 
-    msg = EmailMessage()
-    msg["From"] = settings.notify_email_from or settings.smtp_user
-    msg["To"] = settings.notify_email_to
-    msg["Subject"] = f"New booking: {booking.issue} — {zone.name if zone else 'Bengaluru'}"
-    msg.set_content(_build_message(booking, zone))
-
-    # Port 465 is implicit TLS from the start; 587 negotiates TLS via STARTTLS.
-    use_implicit_tls = settings.smtp_port == 465
+    payload = {
+        "from": settings.notify_email_from,
+        "to": [settings.notify_email_to],
+        "subject": f"New booking: {booking.issue} — {zone.name if zone else 'Bengaluru'}",
+        "text": _build_message(booking, zone),
+    }
 
     try:
-        await aiosmtplib.send(
-            msg,
-            hostname=settings.smtp_host,
-            port=settings.smtp_port,
-            username=settings.smtp_user,
-            password=settings.smtp_password,
-            use_tls=use_implicit_tls,
-            start_tls=not use_implicit_tls,
-        )
+        async with httpx.AsyncClient(timeout=15) as client:
+            resp = await client.post(
+                "https://api.resend.com/emails",
+                json=payload,
+                headers={"Authorization": f"Bearer {settings.resend_api_key}"},
+            )
+            resp.raise_for_status()
     except Exception:
         logger.exception("Failed to send booking email notification")
 
