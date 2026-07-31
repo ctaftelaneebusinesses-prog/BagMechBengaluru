@@ -335,6 +335,22 @@
     display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.4);
     text-decoration:none;
   }
+
+  /* ---------- POWERED BY BADGE (navbar) ---------- */
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .powered-by-nav{
+    display:flex;align-items:center;gap:8px;
+    background:rgba(244,239,228,.05);
+    border:1px solid rgba(244,239,228,.14);border-radius:999px;
+    padding:6px 14px 6px 10px;
+  }
+  .powered-by-nav .pb-label{
+    font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--paper-dim);
+    padding-right:8px;border-right:1px solid rgba(244,239,228,.18);
+  }
+  .powered-by-nav .pb-logo{height:20px;width:auto;flex-shrink:0;object-fit:contain;}
+  @media(max-width:860px){.powered-by-nav{display:none;}}
 </style>
 </head>
 <body>
@@ -349,7 +365,13 @@
       <li><a href="#faq">FAQs</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a href="#book" class="btn btn-amber">Book a Repair</a>
+    <div class="nav-right">
+      <a href="#book" class="btn btn-amber">Book a Repair</a>
+      <div class="powered-by-nav" aria-label="Powered by CraftLanee">
+        <span class="pb-label">Powered by</span>
+        <img class="pb-logo" src="/assets/craftlanee-lockup-white.png" alt="CraftLanee">
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -592,8 +614,8 @@
     </div>
     <div class="contact-grid">
       <div class="contact-item"><div class="k">Location</div>Bengaluru, Karnataka</div>
-      <div class="contact-item"><div class="k">Phone</div>+91 XXXXXXXXXX</div>
-      <div class="contact-item"><div class="k">Email</div>info@yourcompany.com</div>
+      <div class="contact-item"><div class="k">Phone</div><a href="tel:+917338525551">+91 73385 25551</a></div>
+      <div class="contact-item"><div class="k">Email</div><a href="mailto:bagmechbangalore@gmail.com">bagmechbangalore@gmail.com</a></div>
       <div class="contact-item"><div class="k">Hours</div>Mon – Sun, 8 AM – 8 PM</div>
     </div>
   </div>
